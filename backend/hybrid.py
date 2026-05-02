@@ -1,5 +1,6 @@
 from backend.vectorstore import search as vector_search
 from backend.bm25 import bm25_search
+from backend.reranker import rerank
 
 def hybrid_search(query, k=5):
     vector_results=vector_search(query,k)
@@ -10,13 +11,10 @@ def hybrid_search(query, k=5):
     combined=vector_results+bm25_result
 
     #remove_dupliactes
+    unique_docs=list(set(combined))
 
-    seen=set()
-    unique_results=[]
+    #rerank the unique docs
 
-    for doc in combined:
-        if doc not in seen:
-            unique_results.append(doc)
-            seen.add(doc)
+    final_docs=rerank(query,unique_docs,top_k=k)
 
-    return unique_results[:k]
+    return final_docs

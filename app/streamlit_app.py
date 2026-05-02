@@ -28,8 +28,12 @@ if uploaded_file:
         st.write("---")
 
     if st.button("Index Document"):
-        store_chunks(chunks)
-        st.success("Document Indexed Successfully!")
+        if "indexed" not in st.session_state:
+            store_chunks(chunks)
+            st.session_state.indexed=True
+            st.success("Document Indexed Successfully!")
+        else:
+            st.warning("Already indexed this file")
 
 # ---------------- QUERY ----------------
 st.subheader("Ask Question")

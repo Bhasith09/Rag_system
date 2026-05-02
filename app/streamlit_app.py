@@ -5,6 +5,10 @@ from backend.chunking import chunk_text
 from backend.vectorstore import store_chunks, search, reset_db
 from backend.bm25 import build_bm25
 from backend.hybrid import hybrid_search
+from backend.llm import generate_answer
+from backend.context import build_context
+from backend.prompts import load_prompt
+
 
 st.set_page_config(page_title="RAG System", layout="wide")
 st.title("🚀 Production RAG System")
@@ -43,14 +47,17 @@ st.subheader("Ask Question")
 query = st.text_input("Enter your question")
 
 if query:
-    results = hybrid_search(query, k=5)
+    docs = hybrid_search(query, k=5)
 
-    st.subheader("Top Retrieved Chunks")
+    st.write("TOP RETRIEVED CONTEXT:")
+    for i, d in enumerate(docs):
+        st.write(f"[{i+1}]", d)
 
-    if not results:
-        st.warning("No results found")
-    else:
-        for i, r in enumerate(results):
-            st.write(f"Result {i+1}")
-            st.write(r)
-            st.write("---")
+    #Build context
+    context=build_context(docs)
+
+    #Generate answer
+    answer=generate_answer(query,context)
+
+    st.subheader("Answer")
+    st.write(answer)

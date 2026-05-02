@@ -18,7 +18,8 @@ def store_chunks(chunks):
             documents=[chunk],
             embeddings=[embeddings[i].tolist()],
             ids=[str(uuid.uuid4())],
-            metadatas=[{"chunk_index": i}]
+            metadatas=[{"chunk_index": i,
+            "source": "pdf"}],
         )
 
 

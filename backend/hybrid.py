@@ -10,9 +10,14 @@ def hybrid_search(query, k=5):
 
     combined=vector_results+bm25_result
 
-    #remove_dupliactes
-    unique_docs=list(set(combined))
+        #remove_dupliactes
+    seen = set()
+    unique_docs = []
 
+    for d in combined:
+        if d not in seen:
+            unique_docs.append(d)
+            seen.add(d)
     #rerank the unique docs
 
     final_docs=rerank(query,unique_docs,top_k=k)

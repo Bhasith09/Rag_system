@@ -11,13 +11,13 @@ def hybrid_search(query, k=5):
     combined=vector_results+bm25_result
 
         #remove_dupliactes
-    seeen = set()
+    seen = set()
     unique_docs = []
 
     for d in combined:
-        if d not in seeen:
+        if d not in seen:
             unique_docs.append(d)
-            seeen.add(d)
+            seen.add(d)
     #rerank the unique docs
 
     final_docs=rerank(query,unique_docs,top_k=k)

@@ -1,23 +1,18 @@
-import os
 import json
 import yaml
 import pandas as pd
+from datasets import Dataset
 
-from datasets import Dataset, Features, Sequence, Value
 from ragas import evaluate
 from ragas.metrics import faithfulness, answer_relevancy, context_recall
 
-# Disable Chroma telemetry warnings (optional)
-os.environ["ANONYMIZED_TELEMETRY"] = "False"
-
-# ----------- IMPORT YOUR PIPELINE -----------
+# my pipeline
 from backend.hybrid import hybrid_search
 from backend.context import build_context
 from backend.llm import generate_answer
 
 
-# ----------- LOAD DATA -----------
-
+# ---------------- LOAD DATA ----------------
 def load_dataset(path="data/golden_dataset.json"):
     with open(path, "r") as f:
         return json.load(f)
@@ -28,53 +23,44 @@ def load_thresholds(path="eval/thresholds.yaml"):
         return yaml.safe_load(f)
 
 
-# ----------- BUILD EVAL DATA -----------
-
-def build_eval_dataframe():
-    data = load_dataset()
+# ---------------- BUILD EVAL DATA ----------------
+def build_eval_dataframe(limit=20):
+    data = load_dataset()[:limit]
     rows = []
 
     for item in data:
         question = item["question"]
         ground_truth = item["ground_truth"]
 
-        # Step 1: Retrieve documents
+        # 1. Retrieve docs
         docs = hybrid_search(question, k=5)
 
-        # Step 2: FIX — must be List[str]
-        contexts = [str(d) for d in docs] if docs else []
+        # 2. FIX: RAGAS expects List[str]
+        contexts = [str(d) for d in docs]
 
-        # Step 3: Build context string for LLM
+        # 3. Build context string for LLM
         context_text = build_context(contexts)
 
-        # Step 4: Generate answer
+        # 4. Generate answer
         answer = generate_answer(question, context_text)
 
-        # Step 5: Store result
+        # 5. Store row
         rows.append({
-            "question": str(question),
-            "ground_truth": str(ground_truth),
-            "answer": str(answer),
+            "question": question,
+            "ground_truth": ground_truth,
+            "answer": answer,
             "contexts": contexts
         })
 
     return pd.DataFrame(rows)
 
 
-# ----------- RUN EVALUATION -----------
-
+# ---------------- RUN EVALUATION ----------------
 def run():
     df = build_eval_dataframe()
 
-    # FIX: Explicit schema for RAGAS
-    features = Features({
-        "question": Value("string"),
-        "ground_truth": Value("string"),
-        "answer": Value("string"),
-        "contexts": Sequence(Value("string"))
-    })
-
-    dataset = Dataset.from_pandas(df, features=features)
+    # Convert to HuggingFace dataset (required by RAGAS)
+    dataset = Dataset.from_pandas(df)
 
     # Run evaluation
     result = evaluate(
@@ -86,15 +72,14 @@ def run():
         ]
     )
 
-    # Compute mean scores
+    # Convert scores
     scores = result.to_pandas().mean(numeric_only=True).to_dict()
 
     print("\n=== EVALUATION SCORES ===")
-    for metric, value in scores.items():
-        print(f"{metric}: {value:.3f}")
+    for k, v in scores.items():
+        print(f"{k}: {v:.3f}")
 
-    # ----------- THRESHOLD CHECK -----------
-
+    # ---------------- THRESHOLD CHECK ----------------
     thresholds = load_thresholds()
     failed = False
 
@@ -109,7 +94,6 @@ def run():
     print("✅ All evaluation scores are above thresholds")
 
 
-# ----------- MAIN -----------
-
+# ---------------- MAIN ----------------
 if __name__ == "__main__":
     run()

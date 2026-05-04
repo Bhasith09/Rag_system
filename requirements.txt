@@ -1,7 +1,8 @@
 streamlit
 rank-bm25
-langchain-text-splitters
-PyPDF2
+langchain==0.1.20
+langchain-core==0.1.52
+langchain-text-splitters==0.0.2PyPDF2
 groq==0.11.0
 
 python-dotenv==1.0.1

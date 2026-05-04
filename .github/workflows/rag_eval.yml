@@ -32,3 +32,6 @@ jobs:
       - name: Run evaluation
         run: |
           python eval/run_eval.py
+
+      - name: Set CI flag
+        run: echo "CI=true" >> $GITHUB_ENV

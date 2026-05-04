@@ -3,10 +3,16 @@
 from sentence_transformers import SentenceTransformer
 import chromadb
 import uuid
+import os
 
 model = SentenceTransformer('all-MiniLM-L6-v2')
 
-client = chromadb.EphemeralClient(path="./chroma_db")
+if os.getenv("CI"):
+    client = chromadb.EphemeralClient()
+else:
+    client = chromadb.PersistentClient(path="./chroma_db")
+    
+    
 collection = client.get_or_create_collection(name="rag_docs")
 
 

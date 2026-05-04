@@ -1,0 +1,16 @@
+streamlit
+rank_bm25
+langchain_text_splitters
+PyPDF2
+os
+groq
+dotenv
+yaml
+sentence_transformers
+chromadb
+uuid
+json
+pandas
+numpy
+datasets
+ragas

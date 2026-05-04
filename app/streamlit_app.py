@@ -34,11 +34,23 @@ if uploaded_file:
         st.write("---")
 
     if st.button("Index Document"):
-        if "indexed" not in st.session_state:
+
+        if not st.session_state.get("indexed", False):
+
+            # Step 1: store embeddings
             store_chunks(chunks)
+
+            # Step 2: save chunks
+            st.session_state["chunks"] = chunks
+
+            # Step 3: build BM25 index
             build_bm25(chunks)
-            st.session_state.indexed=True
+
+            # Step 4: mark as indexed
+            st.session_state["indexed"] = True
+
             st.success("Document Indexed Successfully!")
+
         else:
             st.warning("Already indexed this file")
 
@@ -53,11 +65,13 @@ if query:
     for i, d in enumerate(docs):
         st.write(f"[{i+1}]", d)
 
-    #Build context
-    context=build_context(docs)
 
     #Generate answer
-    answer=generate_answer(query,context)
+    if not docs:
+        st.write("No relevant context found")
+    else:
+        context=build_context(docs)
+        answer=generate_answer(query,context)
 
-    st.subheader("Answer")
-    st.write(answer)
+        st.subheader("Answer")
+        st.write(answer)

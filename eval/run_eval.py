@@ -24,44 +24,41 @@ def load_thresholds(path="eval/thresholds.yaml"):
 
 
 # ---------------- BUILD EVAL DATA ----------------
-def build_eval_dataframe(limit=20):
-    data = load_dataset()[:limit]
+def build_eval_dataframe():
+    data = load_dataset()
     rows = []
 
     for item in data:
         question = item["question"]
         ground_truth = item["ground_truth"]
 
-        # 1. Retrieve docs
         docs = hybrid_search(question, k=5)
 
-        # 2. FIX: RAGAS expects List[str]
-        contexts = [str(d) for d in docs]
+        # ✅ FIX: must be List[str]
+        contexts = [str(d) for d in docs] if docs else []
 
-        # 3. Build context string for LLM
+        # context for LLM (string)
         context_text = build_context(contexts)
 
-        # 4. Generate answer
         answer = generate_answer(question, context_text)
 
-        # 5. Store row
-        rows.append({
-            "question": question,
-            "ground_truth": ground_truth,
-            "answer": answer,
-            "contexts": contexts
-        })
+        rows.append(
+            {
+                "question": question,
+                "ground_truth": ground_truth,
+                "answer": answer,
+                "contexts": contexts   # ✅ correct format
+            }
+        )
 
     return pd.DataFrame(rows)
-
 
 # ---------------- RUN EVALUATION ----------------
 def run():
     df = build_eval_dataframe()
 
     # Convert to HuggingFace dataset (required by RAGAS)
-    dataset = Dataset.from_pandas(df)
-
+    dataset = Dataset.from_pandas(df, preserve_index=False)
     # Run evaluation
     result = evaluate(
         dataset,

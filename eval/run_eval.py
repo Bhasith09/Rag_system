@@ -4,8 +4,7 @@ import pandas as pd
 
 from datasets import Dataset
 from ragas import evaluate
-from ragas.metrics import faithfulness, answer_relavancy,  context_recall
-
+from ragas.metrics import faithfulness, answer_relevancy, context_recall
 #my pipeline
 
 import backend
@@ -36,7 +35,7 @@ def build_eval_dataframe():
 
         #IMPORNTANT: ragas expects list of contexts
 
-        contexts = docs if docs else [""]
+        contexts = docs if docs else []
 
         context_text=build_context(contexts)
         answer=generate_answer(question,context_text)
@@ -56,12 +55,12 @@ def build_eval_dataframe():
 
 def run():
     df=build_eval_dataframe()
-    dataset=Dataset.from_pandas(df)
+    dataset=Dataset.from_pandas(df)  #convert to hugging face format bcz its required for ragas
 
     result=evaluate(dataset,
                     metrics=[
                         faithfulness,
-                        answer_relavancy,
+                        answer_relevancy,
                         context_recall
                     ])
     scores=result.to_pandas().mean().to_dict()
@@ -69,7 +68,7 @@ def run():
     for k,v in scores.items():
         print(f"{k}: {v:.3f}")
 
-#threshold chcek
+    #threshold chcek
     thresholds=load_thresholds()
     failed=False
     for metrics, threshold in thresholds.items():

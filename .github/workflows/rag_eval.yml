@@ -15,7 +15,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
-          python-version: "3.10.11"
+          python-version: "3.10"
 
       - name: Install dependencies
         run: |
@@ -24,6 +24,10 @@ jobs:
       - name: Set environment variables
         run: |
           echo "GROQ_API_KEY=${{ secrets.GROQ_API_KEY }}" >> $GITHUB_ENV
+
+      # 🔥 IMPORTANT FIX (THIS IS WHAT YOU WERE MISSING)
+      - name: Set PYTHONPATH
+        run: echo "PYTHONPATH=$PWD" >> $GITHUB_ENV
 
       - name: Run evaluation
         run: |

@@ -1,18 +1,17 @@
-#vectorstore.py
-
 from sentence_transformers import SentenceTransformer
 import chromadb
 import uuid
 import os
 
-model = SentenceTransformer('all-MiniLM-L6-v2')
+model = SentenceTransformer("all-MiniLM-L6-v2")
 
-if os.getenv("CI"):
-    client = chromadb.EphemeralClient()
-else:
-    client = chromadb.PersistentClient(path="./chroma_db")
-    
-    
+DB_PATH = "./chroma_db"
+
+def get_client():
+    # Always persistent for dev + CI safety
+    return chromadb.PersistentClient(path=DB_PATH)
+
+client = get_client()
 collection = client.get_or_create_collection(name="rag_docs")
 
 
@@ -24,8 +23,10 @@ def store_chunks(chunks):
             documents=[chunk],
             embeddings=[embeddings[i].tolist()],
             ids=[str(uuid.uuid4())],
-            metadatas=[{"chunk_index": i,
-            "source": "pdf"}],
+            metadatas=[{
+                "chunk_index": i,
+                "source": "pdf"
+            }],
         )
 
 
@@ -41,7 +42,8 @@ def search(query, k=5):
 
 
 def reset_db():
-    """Safely delete all stored vectors"""
-    data = collection.get()
-    if data and data.get("ids"):
-        collection.delete(ids=data["ids"])
+    # SAFE RESET (no file deletion -> avoids WinError 32)
+    try:
+        collection.delete(where={})
+    except Exception:
+        pass

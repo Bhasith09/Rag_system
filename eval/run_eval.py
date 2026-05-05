@@ -4,7 +4,7 @@ import pandas as pd
 
 from datasets import Dataset
 from ragas import evaluate
-from ragas.metrics import faithfulness, answer_relavancy,  context_recall
+from ragas.metrics import faithfulness, answer_relevancy,  context_recall
 
 #my pipeline
 
@@ -61,7 +61,7 @@ def run():
     result=evaluate(dataset,
                     metrics=[
                         faithfulness,
-                        answer_relavancy,
+                        answer_relevancy,
                         context_recall
                     ])
     scores=result.to_pandas().mean().to_dict()

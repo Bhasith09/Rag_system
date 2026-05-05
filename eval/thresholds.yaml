@@ -1,0 +1,4 @@
+# thresholds.yaml
+faithfulness: 0.75
+answer_relevancy: 0.70
+context_recall: 0.70

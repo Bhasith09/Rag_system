@@ -38,10 +38,7 @@ def build_eval_dataframe():
 
         #IMPORNTANT: ragas expects list of contexts
 
-        contexts = [
-            doc.page_content if hasattr(doc, "page_content") else doc
-            for doc in docs
-        ]
+        contexts = docs if docs else ["no context found"]
 
         context_text=build_context(contexts)
         answer=generate_answer(question,context_text)

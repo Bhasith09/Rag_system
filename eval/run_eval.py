@@ -1,3 +1,5 @@
+
+#run_eval.py
 import json
 import yaml
 import pandas as pd
@@ -30,13 +32,16 @@ def build_eval_dataframe():
     rows=[]
     for item in data:
         question=item["question"]
-        ground_truth=item["ground_truth"]
+        ground_truth=item["answer"]
 
         docs=hybrid_search(question,k=5)
 
         #IMPORNTANT: ragas expects list of contexts
 
-        contexts = docs if docs else [""]
+        contexts = [
+            doc.page_content if hasattr(doc, "page_content") else doc
+            for doc in docs
+        ]
 
         context_text=build_context(contexts)
         answer=generate_answer(question,context_text)

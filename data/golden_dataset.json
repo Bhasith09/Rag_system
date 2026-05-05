@@ -2,351 +2,551 @@
   {
     "id": 1,
     "question": "What is the purpose of a research paper?",
+<<<<<<< HEAD
     "ground_truth": "A research paper aims to present findings, analyze a problem, and contribute new knowledge to a field.",
     "source": "general",
     "difficulty": "easy"
+=======
+    "answer": "A research paper aims to present findings, analyze a problem, and contribute new knowledge to a field."
+>>>>>>> bhasi
   },
   {
     "id": 2,
     "question": "What section explains the problem statement?",
+<<<<<<< HEAD
     "ground_truth": "The introduction section explains the problem statement.",
     "source": "introduction",
     "difficulty": "easy"
+=======
+    "answer": "The introduction section explains the problem statement."
+>>>>>>> bhasi
   },
   {
     "id": 3,
     "question": "What is included in the literature review?",
+<<<<<<< HEAD
     "ground_truth": "The literature review summarizes previous research related to the topic.",
     "source": "literature_review",
     "difficulty": "medium"
+=======
+    "answer": "The literature review summarizes previous research related to the topic."
+>>>>>>> bhasi
   },
   {
     "id": 4,
     "question": "What is the role of methodology in a research paper?",
+<<<<<<< HEAD
     "ground_truth": "The methodology explains how the research was conducted, including data collection and analysis methods.",
     "source": "methodology",
     "difficulty": "medium"
+=======
+    "answer": "The methodology explains how the research was conducted, including data collection and analysis methods."
+>>>>>>> bhasi
   },
   {
     "id": 5,
     "question": "What does the results section contain?",
+<<<<<<< HEAD
     "ground_truth": "The results section presents the findings of the research without interpretation.",
     "source": "results",
     "difficulty": "easy"
+=======
+    "answer": "The results section presents the findings of the research without interpretation."
+>>>>>>> bhasi
   },
   {
     "id": 6,
     "question": "What is discussed in the discussion section?",
+<<<<<<< HEAD
     "ground_truth": "The discussion interprets the results and explains their significance.",
     "source": "discussion",
     "difficulty": "medium"
+=======
+    "answer": "The discussion interprets the results and explains their significance."
+>>>>>>> bhasi
   },
   {
     "id": 7,
     "question": "What is the conclusion of a research paper?",
+<<<<<<< HEAD
     "ground_truth": "The conclusion summarizes the findings and suggests future research directions.",
     "source": "conclusion",
     "difficulty": "easy"
+=======
+    "answer": "The conclusion summarizes the findings and suggests future research directions."
+>>>>>>> bhasi
   },
   {
     "id": 8,
     "question": "What is an abstract?",
+<<<<<<< HEAD
     "ground_truth": "An abstract is a brief summary of the research paper including objectives, methods, and results.",
     "source": "abstract",
     "difficulty": "easy"
+=======
+    "answer": "An abstract is a brief summary of the research paper including objectives, methods, and results."
+>>>>>>> bhasi
   },
   {
     "id": 9,
     "question": "Why is citation important in research papers?",
+<<<<<<< HEAD
     "ground_truth": "Citation gives credit to original authors and avoids plagiarism.",
     "source": "general",
     "difficulty": "easy"
+=======
+    "answer": "Citation gives credit to original authors and avoids plagiarism."
+>>>>>>> bhasi
   },
   {
     "id": 10,
     "question": "What is a hypothesis?",
+<<<<<<< HEAD
     "ground_truth": "A hypothesis is a testable prediction about the relationship between variables.",
     "source": "methodology",
     "difficulty": "medium"
+=======
+    "answer": "A hypothesis is a testable prediction about the relationship between variables."
+>>>>>>> bhasi
   },
   {
     "id": 11,
     "question": "What type of data is used in qualitative research?",
+<<<<<<< HEAD
     "ground_truth": "Qualitative research uses non-numerical data such as text, interviews, and observations.",
     "source": "methodology",
     "difficulty": "medium"
+=======
+    "answer": "Qualitative research uses non-numerical data such as text, interviews, and observations."
+>>>>>>> bhasi
   },
   {
     "id": 12,
     "question": "What type of data is used in quantitative research?",
+<<<<<<< HEAD
     "ground_truth": "Quantitative research uses numerical data and statistical analysis.",
     "source": "methodology",
     "difficulty": "medium"
+=======
+    "answer": "Quantitative research uses numerical data and statistical analysis."
+>>>>>>> bhasi
   },
   {
     "id": 13,
     "question": "What is peer review?",
+<<<<<<< HEAD
     "ground_truth": "Peer review is the evaluation of a research paper by experts in the same field.",
     "source": "general",
     "difficulty": "easy"
+=======
+    "answer": "Peer review is the evaluation of a research paper by experts in the same field."
+>>>>>>> bhasi
   },
   {
     "id": 14,
     "question": "What is a research gap?",
+<<<<<<< HEAD
     "ground_truth": "A research gap is an area that has not been fully explored in existing studies.",
     "source": "introduction",
     "difficulty": "medium"
+=======
+    "answer": "A research gap is an area that has not been fully explored in existing studies."
+>>>>>>> bhasi
   },
   {
     "id": 15,
     "question": "What are keywords in a research paper?",
+<<<<<<< HEAD
     "ground_truth": "Keywords are important terms that describe the main topics of the research.",
     "source": "general",
     "difficulty": "easy"
+=======
+    "answer": "Keywords are important terms that describe the main topics of the research."
+>>>>>>> bhasi
   },
 
   {
     "id": 16,
     "question": "What is a research methodology?",
+<<<<<<< HEAD
     "ground_truth": "Research methodology is the systematic approach used to conduct the study and analyze data.",
     "source": "methodology",
     "difficulty": "easy"
+=======
+    "answer": "Research methodology is the systematic approach used to conduct the study and analyze data."
+
+>>>>>>> bhasi
   },
   {
     "id": 17,
     "question": "What is the importance of data analysis in research?",
+<<<<<<< HEAD
     "ground_truth": "Data analysis helps interpret collected data and draw meaningful conclusions.",
     "source": "results",
     "difficulty": "medium"
+=======
+    "answer": "Data analysis helps interpret collected data and draw meaningful conclusions."
+>>>>>>> bhasi
   },
   {
     "id": 18,
     "question": "What is a variable in research?",
+<<<<<<< HEAD
     "ground_truth": "A variable is any measurable factor that can change or be controlled in a study.",
     "source": "methodology",
     "difficulty": "easy"
+=======
+    "answer": "A variable is any measurable factor that can change or be controlled in a study."
+>>>>>>> bhasi
   },
   {
     "id": 19,
     "question": "What is the difference between independent and dependent variables?",
+<<<<<<< HEAD
     "ground_truth": "Independent variables are manipulated, while dependent variables are measured outcomes.",
     "source": "methodology",
     "difficulty": "medium"
+=======
+    "answer": "Independent variables are manipulated, while dependent variables are measured outcomes."
+>>>>>>> bhasi
   },
   {
     "id": 20,
     "question": "What is a sample in research?",
+<<<<<<< HEAD
     "ground_truth": "A sample is a subset of the population selected for analysis.",
     "source": "methodology",
     "difficulty": "easy"
+=======
+    "answer": "A sample is a subset of the population selected for analysis."
+>>>>>>> bhasi
   },
   {
     "id": 21,
     "question": "What is population in research?",
+<<<<<<< HEAD
     "ground_truth": "Population refers to the entire group of individuals or data points under study.",
     "source": "methodology",
     "difficulty": "easy"
+=======
+    "answer": "Population refers to the entire group of individuals or data points under study."
+>>>>>>> bhasi
   },
   {
     "id": 22,
     "question": "What is sampling?",
+<<<<<<< HEAD
     "ground_truth": "Sampling is the process of selecting a subset of individuals from a population.",
     "source": "methodology",
     "difficulty": "easy"
+=======
+    "answer": "Sampling is the process of selecting a subset of individuals from a population."
+>>>>>>> bhasi
   },
   {
     "id": 23,
     "question": "What is bias in research?",
+<<<<<<< HEAD
     "ground_truth": "Bias is a systematic error that affects the validity of research results.",
     "source": "discussion",
     "difficulty": "medium"
+=======
+    "answer": "Bias is a systematic error that affects the validity of research results."
+>>>>>>> bhasi
   },
   {
     "id": 24,
     "question": "What is validity in research?",
+<<<<<<< HEAD
     "ground_truth": "Validity refers to how accurately a study measures what it intends to measure.",
     "source": "methodology",
     "difficulty": "medium"
+=======
+    "answer": "Validity refers to how accurately a study measures what it intends to measure."
+>>>>>>> bhasi
   },
   {
     "id": 25,
     "question": "What is reliability in research?",
+<<<<<<< HEAD
     "ground_truth": "Reliability refers to the consistency of research results over repeated trials.",
     "source": "methodology",
     "difficulty": "medium"
+=======
+    "answer": "Reliability refers to the consistency of research results over repeated trials."
+>>>>>>> bhasi
   },
   {
     "id": 26,
     "question": "What is data preprocessing?",
+<<<<<<< HEAD
     "ground_truth": "Data preprocessing involves cleaning and transforming raw data before analysis.",
     "source": "methodology",
     "difficulty": "medium"
+=======
+    "answer": "Data preprocessing involves cleaning and transforming raw data before analysis."
+>>>>>>> bhasi
   },
   {
     "id": 27,
     "question": "What is normalization in data processing?",
+<<<<<<< HEAD
     "ground_truth": "Normalization is the process of scaling data to a standard range.",
     "source": "methodology",
     "difficulty": "medium"
+=======
+    "answer": "Normalization is the process of scaling data to a standard range."
+>>>>>>> bhasi
   },
   {
     "id": 28,
     "question": "What is data visualization?",
+<<<<<<< HEAD
     "ground_truth": "Data visualization is the graphical representation of data to understand patterns and trends.",
     "source": "results",
     "difficulty": "easy"
+=======
+    "answer": "Data visualization is the graphical representation of data to understand patterns and trends."
+>>>>>>> bhasi
   },
   {
     "id": 29,
     "question": "What is statistical significance?",
+<<<<<<< HEAD
     "ground_truth": "Statistical significance indicates whether the results are unlikely due to chance.",
     "source": "results",
     "difficulty": "medium"
+=======
+    "answer": "Statistical significance indicates whether the results are unlikely due to chance."
+>>>>>>> bhasi
   },
   {
     "id": 30,
     "question": "What is a control group?",
+<<<<<<< HEAD
     "ground_truth": "A control group is a group that does not receive the experimental treatment and is used for comparison.",
     "source": "methodology",
     "difficulty": "medium"
+=======
+    "answer": "A control group is a group that does not receive the experimental treatment and is used for comparison."
+>>>>>>> bhasi
   },
 
   {
     "id": 31,
     "question": "What is the objective of the literature review?",
+<<<<<<< HEAD
     "ground_truth": "The objective is to analyze and summarize existing research related to the topic.",
     "source": "literature_review",
     "difficulty": "medium"
+=======
+    "answer": "The objective is to analyze and summarize existing research related to the topic."
+>>>>>>> bhasi
   },
   {
     "id": 32,
     "question": "What is an experimental research design?",
+<<<<<<< HEAD
     "ground_truth": "It is a research design where variables are manipulated to observe effects.",
     "source": "methodology",
     "difficulty": "medium"
+=======
+    "answer": "It is a research design where variables are manipulated to observe effects."
+>>>>>>> bhasi
   },
   {
     "id": 33,
     "question": "What is observational research?",
+<<<<<<< HEAD
     "ground_truth": "It is a research method where the researcher observes subjects without interference.",
     "source": "methodology",
     "difficulty": "medium"
+=======
+    "answer": "It is a research method where the researcher observes subjects without interference."
+>>>>>>> bhasi
   },
   {
     "id": 34,
     "question": "What is a survey in research?",
+<<<<<<< HEAD
     "ground_truth": "A survey is a method of collecting data through questionnaires or interviews.",
     "source": "methodology",
     "difficulty": "easy"
+=======
+    "answer": "A survey is a method of collecting data through questionnaires or interviews."
+>>>>>>> bhasi
   },
   {
     "id": 35,
     "question": "What is a research design?",
+<<<<<<< HEAD
     "ground_truth": "Research design is the overall plan for conducting a study.",
     "source": "methodology",
     "difficulty": "easy"
+=======
+    "answer": "Research design is the overall plan for conducting a study."
+>>>>>>> bhasi
   },
   {
     "id": 36,
     "question": "What is primary data?",
+<<<<<<< HEAD
     "ground_truth": "Primary data is original data collected directly from sources.",
     "source": "methodology",
     "difficulty": "easy"
+=======
+    "answer": "Primary data is original data collected directly from sources."
+>>>>>>> bhasi
   },
   {
     "id": 37,
     "question": "What is secondary data?",
+<<<<<<< HEAD
     "ground_truth": "Secondary data is data collected from existing sources like books or journals.",
     "source": "methodology",
     "difficulty": "easy"
+=======
+    "answer": "Secondary data is data collected from existing sources like books or journals."
+>>>>>>> bhasi
   },
   {
     "id": 38,
     "question": "What is data interpretation?",
+<<<<<<< HEAD
     "ground_truth": "Data interpretation is the process of making sense of analyzed data.",
     "source": "results",
     "difficulty": "medium"
+=======
+    "answer": "Data interpretation is the process of making sense of analyzed data."
+>>>>>>> bhasi
   },
   {
     "id": 39,
     "question": "What is a research objective?",
+<<<<<<< HEAD
     "ground_truth": "A research objective defines what the study aims to achieve.",
     "source": "introduction",
     "difficulty": "easy"
+=======
+    "answer": "A research objective defines what the study aims to achieve."
+>>>>>>> bhasi
   },
   {
     "id": 40,
     "question": "What is a research question?",
+<<<<<<< HEAD
     "ground_truth": "A research question defines the specific problem the study investigates.",
     "source": "introduction",
     "difficulty": "easy"
+=======
+    "answer": "A research question defines the specific problem the study investigates."
+>>>>>>> bhasi
   },
   {
     "id": 41,
     "question": "What is an algorithm in research?",
+<<<<<<< HEAD
     "ground_truth": "An algorithm is a step-by-step procedure used to solve a problem.",
     "source": "methodology",
     "difficulty": "medium"
+=======
+    "answer": "An algorithm is a step-by-step procedure used to solve a problem."
+>>>>>>> bhasi
   },
   {
     "id": 42,
     "question": "What is model training in machine learning?",
+<<<<<<< HEAD
     "ground_truth": "Model training is the process of teaching a model using data.",
     "source": "methodology",
     "difficulty": "medium"
+=======
+    "answer": "Model training is the process of teaching a model using data."
+>>>>>>> bhasi
   },
   {
     "id": 43,
     "question": "What is model testing?",
+<<<<<<< HEAD
     "ground_truth": "Model testing evaluates how well a trained model performs on unseen data.",
     "source": "results",
     "difficulty": "medium"
+=======
+    "answer": "Model testing evaluates how well a trained model performs on unseen data."
+>>>>>>> bhasi
   },
   {
     "id": 44,
     "question": "What is overfitting in research models?",
+<<<<<<< HEAD
     "ground_truth": "Overfitting occurs when a model performs well on training data but poorly on new data.",
     "source": "methodology",
     "difficulty": "medium"
+=======
+    "answer": "Overfitting occurs when a model performs well on training data but poorly on new data."
+>>>>>>> bhasi
   },
   {
     "id": 45,
     "question": "What is underfitting?",
+<<<<<<< HEAD
     "ground_truth": "Underfitting occurs when a model fails to capture patterns in the data.",
     "source": "methodology",
     "difficulty": "medium"
+=======
+    "answer": "Underfitting occurs when a model fails to capture patterns in the data."
+>>>>>>> bhasi
   },
   {
     "id": 46,
     "question": "What is feature selection?",
+<<<<<<< HEAD
     "ground_truth": "Feature selection is the process of choosing important variables for a model.",
     "source": "methodology",
     "difficulty": "medium"
+=======
+    "answer": "Feature selection is the process of choosing important variables for a model."
+>>>>>>> bhasi
   },
   {
     "id": 47,
     "question": "What is feature engineering?",
+<<<<<<< HEAD
     "ground_truth": "Feature engineering is creating or modifying input variables to improve model performance.",
     "source": "methodology",
     "difficulty": "medium"
+=======
+    "answer": "Feature engineering is creating or modifying input variables to improve model performance."
+>>>>>>> bhasi
   },
   {
     "id": 48,
     "question": "What is an outlier in data?",
+<<<<<<< HEAD
     "ground_truth": "An outlier is a data point that significantly differs from other observations.",
     "source": "methodology",
     "difficulty": "easy"
+=======
+    "answer": "An outlier is a data point that significantly differs from other observations."
+
+>>>>>>> bhasi
   },
   {
     "id": 49,
     "question": "What is correlation in research?",
+<<<<<<< HEAD
     "ground_truth": "Correlation measures the relationship between two variables.",
     "source": "results",
     "difficulty": "medium"
+=======
+    "answer": "Correlation measures the relationship between two variables."
+
+>>>>>>> bhasi
   },
   {
     "id": 50,
     "question": "What is regression analysis?",
+<<<<<<< HEAD
     "ground_truth": "Regression analysis is a statistical method used to model relationships between variables.",
     "source": "results",
     "difficulty": "medium"
@@ -703,3 +903,8 @@
     "difficulty": "medium"
   }
 ]
+=======
+    "answer": "Regression analysis is a statistical method used to model relationships between variables."
+
+  }]
+>>>>>>> bhasi

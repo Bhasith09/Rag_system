@@ -11,7 +11,7 @@ from backend.prompts import load_prompt
 
 
 st.set_page_config(page_title="RAG System", layout="wide")
-st.title("🚀 Production RAG System")
+st.title("🚀 DOCUMENT RAG System")
 
 # ---------------- RESET DB ----------------
 if st.button("Reset Database"):

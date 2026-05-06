@@ -6,7 +6,7 @@ import os
 from datasets import Dataset
 from ragas import evaluate
 
-# RAGAS metrics (new correct import)
+# metrics (keep stable import for your current version)
 from ragas.metrics import (
     faithfulness,
     answer_relevancy,
@@ -20,11 +20,10 @@ from backend.llm import generate_answer
 
 
 # =========================
-# GROQ LLM FOR RAGAS EVAL
+# GROQ LLM (FOR RAGAS JUDGING)
 # =========================
 from langchain_groq import ChatGroq
 from ragas.llms import LangchainLLMWrapper
-
 
 groq_eval_llm = ChatGroq(
     api_key=os.getenv("GROQ_API_KEY"),
@@ -36,9 +35,18 @@ ragas_llm = LangchainLLMWrapper(groq_eval_llm)
 
 
 # =========================
+# LOCAL EMBEDDINGS (FIX OPENAI ERROR)
+# =========================
+from ragas.embeddings import HuggingfaceEmbeddings
+
+embeddings = HuggingfaceEmbeddings(
+    model_name="sentence-transformers/all-MiniLM-L6-v2"
+)
+
+
+# =========================
 # LOAD DATA
 # =========================
-
 def load_dataset(path="data/golden_dataset.json"):
     with open(path, "r") as f:
         return json.load(f)
@@ -52,7 +60,6 @@ def load_thresholds(path="eval/thresholds.yaml"):
 # =========================
 # BUILD EVAL DATASET
 # =========================
-
 def build_eval_dataframe():
     data = load_dataset()
     rows = []
@@ -63,13 +70,11 @@ def build_eval_dataframe():
 
         docs = hybrid_search(question, k=5)
 
-        # safe fallback
+        # fallback safety
         contexts = docs if docs else ["no context found"]
 
-        # convert context list to string for LLM
         context_text = build_context(contexts)
 
-        # generate answer using your RAG pipeline
         answer = generate_answer(question, context_text)
 
         rows.append({
@@ -85,7 +90,6 @@ def build_eval_dataframe():
 # =========================
 # RUN EVALUATION
 # =========================
-
 def run():
     df = build_eval_dataframe()
     dataset = Dataset.from_pandas(df)
@@ -97,7 +101,8 @@ def run():
             answer_relevancy,
             context_recall
         ],
-        llm=ragas_llm
+        llm=ragas_llm,
+        embeddings=embeddings   # 🔥 FIX FOR OPENAI ERROR
     )
 
     scores = result.to_pandas().mean().to_dict()
@@ -126,6 +131,5 @@ def run():
 # =========================
 # MAIN
 # =========================
-
 if __name__ == "__main__":
     run()

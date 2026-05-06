@@ -1,14 +1,17 @@
 # bm25.py
 
 from rank_bm25 import BM25Okapi
-
+import re
 bm25=None
 corpus=[]
+
+def tokenize(text):
+    return re.findall(r'\w+', text.lower())
 
 def build_bm25(chunks):
     global bm25,corpus
 
-    corpus=[chunk.split() for chunk in chunks]
+    corpus=[tokenize(chunk) for chunk in chunks]
     bm25=BM25Okapi(corpus)
 
 def bm25_search(query, k=5):
@@ -16,7 +19,7 @@ def bm25_search(query, k=5):
     if bm25 is None:
         return []
     
-    tokenized_query=query.split()
+    tokenized_query=tokenize(query)
     scores=bm25.get_scores(tokenized_query)
 
     ranked=sorted(

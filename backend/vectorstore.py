@@ -31,7 +31,9 @@ def search(query, k=5):
         n_results=k
     )
 
-    return results.get("documents", [[]])[0]
+    return [
+        doc for doc in results["documents"][0]
+    ]
 
 
 def reset_db():

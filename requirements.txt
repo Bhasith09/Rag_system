@@ -11,3 +11,4 @@ pandas
 numpy
 datasets
 ragas
+langchain-groq

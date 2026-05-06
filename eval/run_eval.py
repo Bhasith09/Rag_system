@@ -40,8 +40,8 @@ def build_eval_dataframe():
 
         contexts = docs if docs else ["no context found"]
 
-        context_text=build_context(contexts)
-        answer=generate_answer(question,context_text)
+        context_text = "\n".join(contexts)
+        answer = generate_answer(question, context_text)
 
         rows.append(
             {

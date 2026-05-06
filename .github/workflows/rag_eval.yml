@@ -27,5 +27,6 @@ jobs:
       - name: Run RAG Evaluation
         env:
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          PYTHONPATH: ${{ github.workspace }}
         run: |
           python eval/run_eval.py

@@ -11,67 +11,73 @@ from backend.prompts import load_prompt
 
 
 st.set_page_config(page_title="RAG System", layout="wide")
-st.title("🚀 Answer My Doc")
+st.title("📚 Research Paper RAG System")
 
-# ---------------- RESET DB ----------------
-if st.button("Reset Database"):
-    reset_db()
-    st.success("Database cleared!")
 
 # ---------------- UPLOAD ----------------
-uploaded_file = st.file_uploader("Upload PDF", type=["pdf"])
+uploaded_file = st.file_uploader("Upload Research Paper", type=["pdf"])
 
 if uploaded_file:
-    text = extract_text_from_pdf(uploaded_file)
-    chunks = chunk_text(text)
 
-    st.success(f"Chunks created: {len(chunks)}")
+    if st.session_state.get("current_file") != uploaded_file.name:
+        st.info("Processing research paper...")
+        reset_db()  #reset database when new file is uploaded
 
-    st.subheader("Sample Chunks")
-    for i, chunk in enumerate(chunks[:5]):
-        st.write(f"Chunk {i+1}")
-        st.write(chunk)
-        st.write("---")
+        
+        pages = extract_text_from_pdf(uploaded_file)
+        chunks = chunk_text(pages)
 
-    if st.button("Index Document"):
 
-        if not st.session_state.get("indexed", False):
+        # Step 1: store embeddings
+        store_chunks(chunks)
 
-            # Step 1: store embeddings
-            store_chunks(chunks)
+        # Step 3: build BM25 index
+        build_bm25(chunks)
+#save session state
+        st.session_state["indexed"] = True
+        st.session_state["current_file"] = uploaded_file.name
+        
+        st.success("Research Paper Indexed Successfully!")
+        st.subheader("Sample Chunks")
+        for i, chunk in enumerate(chunks[:5]):
+            st.write(f"Chunk {i+1}")
 
-            # Step 2: save chunks
-            st.session_state["chunks"] = chunks
+            st.write(chunk["text"])
 
-            # Step 3: build BM25 index
-            build_bm25(chunks)
+            st.write(
+                f"Page: {chunk['page']} | Paragraph: {chunk['paragraph']}"
+            )
 
-            # Step 4: mark as indexed
-            st.session_state["indexed"] = True
+            st.write("---")
 
-            st.success("Document Indexed Successfully!")
-
-        else:
-            st.warning("Already indexed this file")
 
 # ---------------- QUERY ----------------
-st.subheader("Ask Question")
+st.subheader("Ask Questions About the Research Paper")
 query = st.text_input("Enter your question")
 
 if query:
-    docs = hybrid_search(query, k=5)
-
-    st.write("TOP RETRIEVED CONTEXT:")
-    for i, d in enumerate(docs):
-        st.write(f"[{i+1}]", d)
-
-
-    #Generate answer
-    if not docs:
-        st.write("No relevant context found")
+    if not st.session_state.get("indexed", False):
+        st.warning("Please upload a research paper first.")
     else:
-        context=build_context(docs)
-        answer=generate_answer(query,context)
+        docs = hybrid_search(query, k=5)
 
-        st.subheader("Answer")
-        st.write(answer)
+        st.write("TOP RETRIEVED CONTEXT:")
+        for i, d in enumerate(docs):
+            st.write(f"[{i+1}]")
+            st.write(d["text"])
+            st.write(
+                f"Source: {d['source']} | "
+                f"Page: {d['page']} | "
+                f"Paragraph: {d['paragraph']}"
+            )
+            st.write("---")
+        #generate answer
+        if not docs:
+            st.write("No relevant context found")
+        else:
+
+            context=build_context(docs)
+            answer=generate_answer(query,context)
+
+            st.subheader("Answer")
+            st.write(answer)

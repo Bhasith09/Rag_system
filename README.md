@@ -6,6 +6,12 @@ An end-to-end **Retrieval-Augmented Generation (RAG)** system that allows users 
 <p align="center">
   <img src="images/img1.png" width="900"/>
 </p>
+<p align="center">
+  <img src="images/img2.png" width="900"/>
+</p>
+<p align="center">
+  <img src="images/img3.png" width="900"/>
+</p>
 
 ## 🚀 Features
 

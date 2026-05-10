@@ -1,91 +1,135 @@
-
-#run_eval.py
 import json
 import yaml
 import pandas as pd
+import os
 
 from datasets import Dataset
 from ragas import evaluate
-from ragas.metrics import faithfulness, answer_relevancy,  context_recall
 
-#my pipeline
+# metrics (keep stable import for your current version)
+from ragas.metrics import (
+    faithfulness,
+    answer_relevancy,
+    context_recall
+)
 
-import backend
+# your pipeline
 from backend.hybrid import hybrid_search
 from backend.context import build_context
 from backend.llm import generate_answer
 
-#load the data
 
+# =========================
+# GROQ LLM (FOR RAGAS JUDGING)
+# =========================
+from langchain_groq import ChatGroq
+from ragas.llms import LangchainLLMWrapper
+
+groq_eval_llm = ChatGroq(
+    api_key=os.getenv("GROQ_API_KEY"),
+    model="llama-3.1-8b-instant",
+    temperature=0
+)
+
+ragas_llm = LangchainLLMWrapper(groq_eval_llm)
+
+
+# =========================
+# LOCAL EMBEDDINGS (FIX OPENAI ERROR)
+# =========================
+from ragas.embeddings import HuggingfaceEmbeddings
+
+embeddings = HuggingfaceEmbeddings(
+    model_name="sentence-transformers/all-MiniLM-L6-v2"
+)
+
+
+# =========================
+# LOAD DATA
+# =========================
 def load_dataset(path="data/golden_dataset.json"):
     with open(path, "r") as f:
         return json.load(f)
-    
+
+
 def load_thresholds(path="eval/thresholds.yaml"):
-    with open(path ,"r") as f:
+    with open(path, "r") as f:
         return yaml.safe_load(f)
-    
-#build eval data
 
+
+# =========================
+# BUILD EVAL DATASET
+# =========================
 def build_eval_dataframe():
-    data=load_dataset()
-    rows=[]
+    data = load_dataset()
+    rows = []
+
     for item in data:
-        question=item["question"]
-        ground_truth=item["answer"]
+        question = item["question"]
+        ground_truth = item["answer"]
 
-        docs=hybrid_search(question,k=5)
+        docs = hybrid_search(question, k=5)
 
-        #IMPORNTANT: ragas expects list of contexts
+        # fallback safety
+        contexts = docs if docs else ["no context found"]
 
-        contexts = [
-            doc.page_content if hasattr(doc, "page_content") else doc
-            for doc in docs
-        ]
+        context_text = build_context(contexts)
 
-        context_text=build_context(contexts)
-        answer=generate_answer(question,context_text)
+        answer = generate_answer(question, context_text)
 
-        rows.append(
-            {
-                "question": question,
-                "ground_truth": ground_truth,
-                "answer": answer,
-                "contexts": contexts
-            }
-        )
+        rows.append({
+            "question": question,
+            "ground_truth": ground_truth,
+            "answer": answer,
+            "contexts": contexts
+        })
 
     return pd.DataFrame(rows)
 
-#Run Evaluation
 
+# =========================
+# RUN EVALUATION
+# =========================
 def run():
-    df=build_eval_dataframe()
-    dataset=Dataset.from_pandas(df)
+    df = build_eval_dataframe()
+    dataset = Dataset.from_pandas(df)
 
-    result=evaluate(dataset,
-                    metrics=[
-                        faithfulness,
-                        answer_relevancy,
-                        context_recall
-                    ])
-    scores=result.to_pandas().mean().to_dict()
-    print("\n===Evaluation Scores===")
-    for k,v in scores.items():
+    result = evaluate(
+        dataset,
+        metrics=[
+            faithfulness,
+            answer_relevancy,
+            context_recall
+        ],
+        llm=ragas_llm,
+        embeddings=embeddings   # 🔥 FIX FOR OPENAI ERROR
+    )
+
+    scores = result.to_pandas().mean().to_dict()
+
+    print("\n=== Evaluation Scores ===")
+    for k, v in scores.items():
         print(f"{k}: {v:.3f}")
 
-#threshold chcek
-    thresholds=load_thresholds()
-    failed=False
-    for metrics, threshold in thresholds.items():
-        if scores[metrics]<threshold:
-            print(f"❌ {metrics} below threshold: {scores[metrics]:.3f} < {threshold}")
-            failed=True
+    # =========================
+    # THRESHOLD CHECK
+    # =========================
+    thresholds = load_thresholds()
+    failed = False
+
+    for metric, threshold in thresholds.items():
+        if metric in scores and scores[metric] < threshold:
+            print(f"❌ {metric} below threshold: {scores[metric]:.3f} < {threshold}")
+            failed = True
+
     if failed:
         raise SystemExit("Build failed due to low evaluation scores")
-    print("✅ All evaluation scores are above the thresholds")
 
-if __name__=="__main__":
+    print("✅ All evaluation scores are above thresholds")
+
+
+# =========================
+# MAIN
+# =========================
+if __name__ == "__main__":
     run()
-
-                    

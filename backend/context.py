@@ -1,4 +1,4 @@
-    #context.py
+# context.py
 
 def build_context(chunks):
 
@@ -8,12 +8,12 @@ def build_context(chunks):
 
         context_lines.append(
             f"""
-SOURCE: {chunk['source']}
-PAGE: {chunk['page']}
-PARAGRAPH: {chunk['paragraph']}
+SOURCE: {chunk.metadata.get("source", "Unknown")}
+PAGE: {chunk.metadata.get("page", 0) + 1}
+PARAGRAPH: {chunk.metadata.get("paragraph", "N/A")}
 
 CONTENT:
-{chunk['text']}
+{chunk.page_content}
 """
         )
 

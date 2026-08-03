@@ -6,23 +6,28 @@ import os
 from datasets import Dataset
 from ragas import evaluate
 
-# metrics (keep stable import for your current version)
+# Metrics
 from ragas.metrics import (
     faithfulness,
     answer_relevancy,
     context_recall
 )
 
-# your pipeline
+# Your pipeline
 from backend.hybrid import hybrid_search
 from backend.context import build_context
 from backend.llm import generate_answer
+
+# LangChain Document
+from langchain_core.documents import Document
 
 
 # =========================
 # GROQ LLM (FOR RAGAS JUDGING)
 # =========================
+
 from langchain_groq import ChatGroq
+
 from ragas.llms import LangchainLLMWrapper
 
 groq_eval_llm = ChatGroq(
@@ -35,8 +40,9 @@ ragas_llm = LangchainLLMWrapper(groq_eval_llm)
 
 
 # =========================
-# LOCAL EMBEDDINGS (FIX OPENAI ERROR)
+# LOCAL EMBEDDINGS
 # =========================
+
 from ragas.embeddings import HuggingfaceEmbeddings
 
 embeddings = HuggingfaceEmbeddings(
@@ -47,6 +53,7 @@ embeddings = HuggingfaceEmbeddings(
 # =========================
 # LOAD DATA
 # =========================
+
 def load_dataset(path="data/golden_dataset.json"):
     with open(path, "r") as f:
         return json.load(f)
@@ -58,30 +65,44 @@ def load_thresholds(path="eval/thresholds.yaml"):
 
 
 # =========================
-# BUILD EVAL DATASET
+# BUILD EVALUATION DATASET
 # =========================
+
 def build_eval_dataframe():
+
     data = load_dataset()
+
     rows = []
 
     for item in data:
+
         question = item["question"]
         ground_truth = item["answer"]
 
         docs = hybrid_search(question, k=5)
 
-        # fallback safety
-        contexts = docs if docs else ["no context found"]
+        # Fallback if nothing is retrieved
+        if not docs:
+            docs = [
+                Document(
+                    page_content="No relevant context found.",
+                    metadata={
+                        "source": "None",
+                        "page": 0,
+                        "paragraph": 0
+                    }
+                )
+            ]
 
-        context_text = build_context(contexts)
+        context = build_context(docs)
 
-        answer = generate_answer(question, context_text)
+        answer = generate_answer(question, context)
 
         rows.append({
             "question": question,
             "ground_truth": ground_truth,
             "answer": answer,
-            "contexts": contexts
+            "contexts": [doc.page_content for doc in docs]
         })
 
     return pd.DataFrame(rows)
@@ -90,8 +111,11 @@ def build_eval_dataframe():
 # =========================
 # RUN EVALUATION
 # =========================
+
 def run():
+
     df = build_eval_dataframe()
+
     dataset = Dataset.from_pandas(df)
 
     result = evaluate(
@@ -102,34 +126,43 @@ def run():
             context_recall
         ],
         llm=ragas_llm,
-        embeddings=embeddings   # 🔥 FIX FOR OPENAI ERROR
+        embeddings=embeddings
     )
 
     scores = result.to_pandas().mean().to_dict()
 
-    print("\n=== Evaluation Scores ===")
-    for k, v in scores.items():
-        print(f"{k}: {v:.3f}")
+    print("\n========== Evaluation Scores ==========\n")
 
-    # =========================
-    # THRESHOLD CHECK
-    # =========================
+    for metric, score in scores.items():
+        print(f"{metric}: {score:.3f}")
+
     thresholds = load_thresholds()
+
     failed = False
 
     for metric, threshold in thresholds.items():
+
         if metric in scores and scores[metric] < threshold:
-            print(f"❌ {metric} below threshold: {scores[metric]:.3f} < {threshold}")
+
+            print(
+                f"❌ {metric} below threshold "
+                f"({scores[metric]:.3f} < {threshold})"
+            )
+
             failed = True
 
     if failed:
-        raise SystemExit("Build failed due to low evaluation scores")
+        raise SystemExit(
+            "Build failed because one or more evaluation scores "
+            "are below the configured thresholds."
+        )
 
-    print("✅ All evaluation scores are above thresholds")
+    print("\n✅ All evaluation scores passed the required thresholds.")
 
 
 # =========================
 # MAIN
 # =========================
+
 if __name__ == "__main__":
     run()

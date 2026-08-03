@@ -1,30 +1,40 @@
-import PyPDF2
+# pdf_loader.py
+
+from langchain_community.document_loaders import PyPDFLoader
+from langchain_core.documents import Document
 
 
-def extract_text_from_pdf(file):
+def extract_text_from_pdf(file_path):
 
-    reader = PyPDF2.PdfReader(file)
+    loader = PyPDFLoader(file_path)
+    pages = loader.load()
 
-    pages = []
+    paragraphs = []
 
-    for page_num, page in enumerate(reader.pages):
+    for page in pages:
 
-        text = page.extract_text() or ""
+        page_text = page.page_content.strip()
 
-        # Split into paragraphs
-        paragraphs = text.split("\n\n")
-
-        for para_num, para in enumerate(paragraphs):
-
+        # Split into paragraph
+        
+        split_paragraphs = []
+        for para in page_text.split("\n\n"):
             para = para.strip()
-
             if para:
+                split_paragraphs.append(para)
+                
+                
+        for para_num, para in enumerate(split_paragraphs, start=1):
 
-                pages.append({
-                    "text": para,
-                    "page": page_num + 1,
-                    "paragraph": para_num + 1,
-                    "source": file.name
-                })
+            paragraphs.append(
+                Document(
+                    page_content=para,
+                    metadata={
+                        "source": page.metadata["source"],
+                        "page": page.metadata["page"],
+                        "paragraph": para_num
+                    }
+                )
+            )
 
-    return pages
+    return paragraphs

@@ -1,58 +1,27 @@
-#vectorstore.py
+from langchain_community.vectorstores import FAISS
+from langchain_huggingface import HuggingFaceEmbeddings
 
-from sentence_transformers import SentenceTransformer
-import chromadb
-import uuid
+# Embedding model
+embeddings = HuggingFaceEmbeddings(
+    model_name="sentence-transformers/all-MiniLM-L6-v2"
+)
 
-model = SentenceTransformer('all-MiniLM-L6-v2')
-
-client = chromadb.PersistentClient(path="./chroma_db")
-collection = client.get_or_create_collection(name="rag_docs")
-
+vectorstore = None
 
 def store_chunks(chunks):
-    texts=[chunk["text"] for chunk in chunks]
-    embeddings = model.encode(texts)
-
-    for i, chunk in enumerate(chunks):
-        collection.add(
-            documents=[chunk["text"]],
-            embeddings=[embeddings[i].tolist()],
-            ids=[str(uuid.uuid4())],
-
-            metadatas=[{
-                "page": chunk["page"],
-                "paragraph": chunk["paragraph"],
-                "source": chunk["source"]
-            }],
-        )
+    """Create a FAISS vector database."""
+    global vectorstore
+    vectorstore = FAISS.from_documents(chunks, embeddings)
 
 
 def search(query, k=5):
-    query_embedding = model.encode([query])[0].tolist()
-
-    results = collection.query(
-        query_embeddings=[query_embedding],
-        n_results=k
-    )
-
-    docs=results.get("documents", [[]])[0]
-    metas=results.get("metadatas", [[]])[0]
-
-    combined=[]
-    for doc, meta in zip(docs, metas):
-        combined.append({
-            "text": doc,
-            "page": meta["page"],
-            "paragraph": meta["paragraph"],
-            "source": meta["source"]
-        })
-    return combined
-
+    """Search the vector database."""
+    if vectorstore is None:
+        return []
+    return vectorstore.similarity_search(query, k=k)
 
 
 def reset_db():
-    """Safely delete all stored vectors"""
-    data = collection.get()
-    if data and data.get("ids"):
-        collection.delete(ids=data["ids"])
+    """Clear the current vector database."""
+    global vectorstore
+    vectorstore = None

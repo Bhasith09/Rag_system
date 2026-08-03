@@ -1,26 +1,34 @@
-#llm.py
+# llm.py
 
-from groq import Groq
+from langchain_groq import ChatGroq
+from langchain_core.prompts import ChatPromptTemplate
 from backend.prompts import load_prompt
 from dotenv import load_dotenv
 import os
 
 load_dotenv()
-client=Groq(api_key=os.getenv("GROQ_API_KEY"))
+
+llm = ChatGroq(
+    model="llama-3.1-8b-instant",
+    api_key=os.getenv("GROQ_API_KEY"),
+    temperature=0.2
+)
+
 
 def generate_answer(query, context):
-    prompt_cfg=load_prompt()
 
-    system=prompt_cfg["system"]
-    user=prompt_cfg["user"].format(query=query, context=context)
+    prompt_cfg = load_prompt()
 
-    response=client.chat.completions.create(
-        model="llama-3.1-8b-instant",
-        messages=[
-            {"role":"system","content":system},
-            {"role":"user","content":user}
+    prompt = ChatPromptTemplate.from_messages([
+        ("system", prompt_cfg["system"]),
+        ("user", prompt_cfg["user"])
+    ])
 
-        ],
-        temperature=0.2
-    )
-    return response.choices[0].message.content
+    chain = prompt | llm
+
+    response = chain.invoke({
+        "query": query,
+        "context": context
+    })
+
+    return response.content

@@ -5,7 +5,7 @@ services:
   backend:
     build:
       context: .
-      dockerfile: Dockerfile.fastapi
+      dockerfile: dockerfile.fastapi
 
     ports:
       - "8001:8000"
@@ -16,7 +16,7 @@ services:
   frontend:
     build:
       context: .
-      dockerfile: Dockerfile.streamlit
+      dockerfile: dockerfile.streamlit
 
     ports:
       - "8502:8501"

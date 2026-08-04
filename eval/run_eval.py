@@ -2,11 +2,9 @@ import json
 import yaml
 import pandas as pd
 from datasets import Dataset
-
 from ragas import evaluate
 from ragas.metrics import faithfulness, answer_relevancy, context_recall
 
-# my pipeline
 from backend.hybrid import hybrid_search
 from backend.context import build_context
 from backend.llm import generate_answer
@@ -23,7 +21,7 @@ def load_thresholds(path="eval/thresholds.yaml"):
         return yaml.safe_load(f)
 
 
-# ---------------- BUILD EVAL DATA ----------------
+# ---------------- BUILD DATASET ----------------
 def build_eval_dataframe():
     data = load_dataset()
     rows = []
@@ -34,32 +32,29 @@ def build_eval_dataframe():
 
         docs = hybrid_search(question, k=5)
 
-        # ✅ FIX: must be List[str]
-        contexts = [str(d) for d in docs] if docs else []
+        # ✅ FIX: RAGAS expects List[str]
+        contexts = [str(d) for d in docs]
 
-        # context for LLM (string)
         context_text = build_context(contexts)
 
         answer = generate_answer(question, context_text)
 
-        rows.append(
-            {
-                "question": question,
-                "ground_truth": ground_truth,
-                "answer": answer,
-                "contexts": contexts   # ✅ correct format
-            }
-        )
+        rows.append({
+            "question": question,
+            "ground_truth": ground_truth,
+            "answer": answer,
+            "contexts": contexts
+        })
 
     return pd.DataFrame(rows)
+
 
 # ---------------- RUN EVALUATION ----------------
 def run():
     df = build_eval_dataframe()
 
-    # Convert to HuggingFace dataset (required by RAGAS)
-    dataset = Dataset.from_pandas(df, preserve_index=False)
-    # Run evaluation
+    dataset = Dataset.from_pandas(df)
+
     result = evaluate(
         dataset,
         metrics=[
@@ -69,28 +64,25 @@ def run():
         ]
     )
 
-    # Convert scores
-    scores = result.to_pandas().mean(numeric_only=True).to_dict()
+    scores = result.to_pandas().mean().to_dict()
 
     print("\n=== EVALUATION SCORES ===")
     for k, v in scores.items():
         print(f"{k}: {v:.3f}")
 
-    # ---------------- THRESHOLD CHECK ----------------
     thresholds = load_thresholds()
-    failed = False
 
+    failed = False
     for metric, threshold in thresholds.items():
-        if metric in scores and scores[metric] < threshold:
+        if scores.get(metric, 0) < threshold:
             print(f"❌ {metric} below threshold: {scores[metric]:.3f} < {threshold}")
             failed = True
 
     if failed:
-        raise SystemExit("❌ Build failed due to low evaluation scores")
+        raise SystemExit("❌ Evaluation failed (CI BLOCKED)")
 
-    print("✅ All evaluation scores are above thresholds")
+    print("✅ All metrics passed thresholds")
 
 
-# ---------------- MAIN ----------------
 if __name__ == "__main__":
     run()

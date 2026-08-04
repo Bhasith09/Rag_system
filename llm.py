@@ -1,24 +1,28 @@
-from groq import Groq
-from prompts import load_prompt
+from langchain_groq import ChatGroq
+from langchain_core.prompts import ChatPromptTemplate
 from dotenv import load_dotenv
-import os
+from prompts import load_prompt
 
 load_dotenv()
-client=Groq(api_key=os.getenv("GROQ_API_KEY"))
+
+llm = ChatGroq(
+    model="llama-3.1-8b-instant",
+    temperature=0.2
+)
 
 def generate_answer(query, context):
-    prompt_cfg=load_prompt()
+    prompt_cfg = load_prompt()
 
-    system=prompt_cfg["system"]
-    user=prompt_cfg["user"].format(query=query, context=context)
+    prompt = ChatPromptTemplate.from_messages([
+        ("system", prompt_cfg["system"]),
+        ("user", prompt_cfg["user"])
+    ])
 
-    response=client.chat.completions.create(
-        model="llama-3.1-8b-instant",
-        messages=[
-            {"role":"system","content":system},
-            {"role":"user","content":user}
-
-        ],
-        temperature=0.2
+    messages = prompt.format_messages(
+        query=query,
+        context=context
     )
-    return response.choices[0].message.content
+
+    response = llm.invoke(messages)
+
+    return response.content

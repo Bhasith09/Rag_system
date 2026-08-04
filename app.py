@@ -1,78 +1,94 @@
-# streamlit_app 
+import hashlib
 import streamlit as st
 
-
+from ingest import extract_text_from_pdf
 from chunking import chunk_text
-from vectorstore import store_chunks, search, reset_db
+from vectorstore import store_chunks, reset_db
 from bm25 import build_bm25
 from hybrid import hybrid_search
-from llm import generate_answer
 from context import build_context
-from prompts import load_prompt
-from ingest import extract_text_from_pdf
+from llm import generate_answer
 
 st.set_page_config(page_title="RAG System", layout="wide")
-st.title("🚀 Production RAG System")
-
-# ---------------- RESET DB ----------------
-
-reset_db()
-st.success("Database cleared!")
+st.title("🚀 Production Hybrid RAG System")
 
 # ---------------- UPLOAD ----------------
+
 uploaded_file = st.file_uploader("Upload PDF", type=["pdf"])
 
 if uploaded_file:
-    text = extract_text_from_pdf(uploaded_file)
-    chunks = chunk_text(text)
 
-    st.success(f"Chunks created: {len(chunks)}")
+    file_hash = hashlib.md5(uploaded_file.getvalue()).hexdigest()
 
-    st.subheader("Sample Chunks")
-    for i, chunk in enumerate(chunks[:5]):
-        st.write(f"Chunk {i+1}")
-        st.write(chunk)
-        st.write("---")
+    if st.session_state.get("file_hash") != file_hash:
 
+        reset_db()
 
+        # Returns LangChain Documents
+        documents = extract_text_from_pdf(uploaded_file)
 
-    if not st.session_state.get("indexed", False):
+        # Returns chunked Documents
+        chunks = chunk_text(documents)
 
-            # Step 1: store embeddings
+        st.success(f"Chunks created: {len(chunks)}")
+
+        st.subheader("Sample Chunks")
+
+        for i, chunk in enumerate(chunks[:5], start=1):
+            page = chunk.metadata.get("page", 0) + 1
+            paragraph = chunk.metadata.get("paragraph", 1)
+
+            st.markdown(f"### Chunk {i}")
+            st.write(f"**Page:** {page}")
+            st.write(f"**Paragraph:** {paragraph}")
+            st.write(chunk.page_content)
+            st.write("---")
+
+        # Store in Chroma
         store_chunks(chunks)
 
-            # Step 2: save chunks
-        st.session_state["chunks"] = chunks
-
-            # Step 3: build BM25 index
+        # Build BM25
         build_bm25(chunks)
 
-            # Step 4: mark as indexed
-        st.session_state["indexed"] = True
+        st.session_state["file_hash"] = file_hash
+        st.session_state["chunks"] = chunks
 
         st.success("Document Indexed Successfully!")
 
     else:
-        st.warning("Already indexed this file")
+        st.info("Document already indexed.")
 
 # ---------------- QUERY ----------------
+
 st.subheader("Ask Question")
+
 query = st.text_input("Enter your question")
 
 if query:
+
     docs = hybrid_search(query, k=5)
 
-    st.write("TOP RETRIEVED CONTEXT:")
-    for i, d in enumerate(docs):
-        st.write(f"[{i+1}]", d)
-
-
-    #Generate answer
     if not docs:
-        st.write("No relevant context found")
+        st.warning("No relevant context found.")
+
     else:
-        context=build_context(docs)
-        answer=generate_answer(query,context)
+
+        st.subheader("Top Retrieved Context")
+
+        for i, doc in enumerate(docs, start=1):
+
+            page = doc.metadata.get("page", 0) + 1
+            paragraph = doc.metadata.get("paragraph", 1)
+
+            st.markdown(f"### [{i}]")
+            st.write(f"**Page:** {page}")
+            st.write(f"**Paragraph:** {paragraph}")
+            st.write(doc.page_content)
+            st.write("---")
+
+        context = build_context(docs)
+
+        answer = generate_answer(query, context)
 
         st.subheader("Answer")
         st.write(answer)

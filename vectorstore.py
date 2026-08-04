@@ -1,49 +1,48 @@
-from sentence_transformers import SentenceTransformer
-import chromadb
-import uuid
-import os
-
-model = SentenceTransformer("all-MiniLM-L6-v2")
+from langchain_huggingface import HuggingFaceEmbeddings
+from langchain_chroma import Chroma
 
 DB_PATH = "./chroma_db"
 
-def get_client():
-    # Always persistent for dev + CI safety
-    return chromadb.PersistentClient(path=DB_PATH)
+embeddings = HuggingFaceEmbeddings(
+    model_name="sentence-transformers/all-MiniLM-L6-v2"
+)
 
-client = get_client()
-collection = client.get_or_create_collection(name="rag_docs")
+vectorstore = Chroma(
+    persist_directory=DB_PATH,
+    embedding_function=embeddings
+)
 
 
 def store_chunks(chunks):
-    embeddings = model.encode(chunks)
+    texts = []
+    metadatas = []
 
     for i, chunk in enumerate(chunks):
-        collection.add(
-            documents=[chunk],
-            embeddings=[embeddings[i].tolist()],
-            ids=[str(uuid.uuid4())],
-            metadatas=[{
-                "chunk_index": i,
-                "source": "pdf"
-            }],
-        )
+        metadata = dict(chunk.metadata)  # Preserve existing metadata
+        metadata["chunk_index"] = i
+
+        texts.append(chunk.page_content)
+        metadatas.append(metadata)
+
+    vectorstore.add_texts(
+        texts=texts,
+        metadatas=metadatas
+    )
 
 
 def search(query, k=5):
-    query_embedding = model.encode([query])[0].tolist()
-
-    results = collection.query(
-        query_embeddings=[query_embedding],
-        n_results=k
-    )
-
-    return results.get("documents", [[]])[0]
+    return vectorstore.similarity_search(query, k=k)
 
 
 def reset_db():
-    # SAFE RESET (no file deletion -> avoids WinError 32)
+    global vectorstore
+
     try:
-        collection.delete(where={})
+        vectorstore.delete_collection()
     except Exception:
         pass
+
+    vectorstore = Chroma(
+        persist_directory=DB_PATH,
+        embedding_function=embeddings
+    )

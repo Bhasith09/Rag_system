@@ -1,15 +1,18 @@
-#ingest.py
+from langchain_community.document_loaders import PyPDFLoader
+import tempfile
+import os
 
-import PyPDF2
+def extract_text_from_pdf(uploaded_file):
+    with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as temp_file:
+        temp_file.write(uploaded_file.getvalue())
+        temp_path = temp_file.name
 
-def extract_text_from_pdf(file):
-    reader = PyPDF2.PdfReader(file)
-    text = ""
+    try:
+        loader = PyPDFLoader(temp_path)
+        documents = loader.load()
 
-    for page in reader.pages:
-        text += page.extract_text() or ""
+        return documents
 
-    return text
-
-# from langchain_community.document_loaders
-# def extract_text_from_pdf(file):
+    finally:
+        if os.path.exists(temp_path):
+            os.remove(temp_path)

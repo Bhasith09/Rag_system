@@ -1,6 +1,7 @@
 import json
 import yaml
 import pandas as pd
+import os
 
 from datasets import Dataset
 
@@ -19,6 +20,7 @@ from llm import generate_answer
 
 # ---------------- LOAD DATA ----------------
 
+
 def load_dataset(path="../data/golden_dataset.json"):
 
     with open(path, "r", encoding="utf-8") as f:
@@ -34,6 +36,7 @@ def load_thresholds(path="thresholds.yaml"):
 
 
 # ---------------- BUILD EVALUATION DATA ----------------
+
 
 def build_eval_dataframe():
 
@@ -72,14 +75,13 @@ def build_eval_dataframe():
         )
 
 
-        rows.append(
-            {
-                "question": question,
-                "ground_truth": ground_truth,
-                "answer": answer,
-                "contexts": contexts
-            }
-        )
+
+        rows.append({
+            "question": question,
+            "ground_truth": ground_truth,
+            "answer": answer,
+            "contexts": [doc.page_content for doc in docs]
+        })
 
 
     return pd.DataFrame(rows)
@@ -94,6 +96,7 @@ def run():
 
 
     dataset = Dataset.from_pandas(df)
+
 
 
     result = evaluate(
@@ -167,5 +170,4 @@ def run():
 
 
 if __name__ == "__main__":
-
     run()

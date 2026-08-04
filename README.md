@@ -3,6 +3,18 @@
 An end-to-end **Retrieval-Augmented Generation (RAG)** system that allows users to upload research papers (PDFs) and ask intelligent questions. The system retrieves context using **Hybrid Search (Vector + BM25)**, reranks results using a **Cross-Encoder**, and generates grounded answers using an LLM with **citations (page + paragraph level)**.
 
 ---
+<<<<<<< HEAD
+=======
+<p align="center">
+  <img src="images/img1.png" width="900"/>
+</p>
+<p align="center">
+  <img src="images/img2.png" width="900"/>
+</p>
+<p align="center">
+  <img src="images/img3.png" width="900"/>
+</p>
+>>>>>>> main
 
 ## 🚀 Features
 
@@ -99,3 +111,7 @@ Rag\_system/
 ├── chroma\_db/
 ├── requirements.txt
 └── README.md
+<<<<<<< HEAD
+=======
+
+>>>>>>> main

@@ -1,3 +1,4 @@
+
 import hashlib
 import streamlit as st
 
@@ -61,6 +62,7 @@ if uploaded_file:
 # ---------------- QUERY ----------------
 
 st.subheader("Ask Question")
+
 
 query = st.text_input("Enter your question")
 

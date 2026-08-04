@@ -11,9 +11,16 @@ prompt:
 
     Do not use outside knowledge.
 
+
   user: |
     Question:
     {query}
 
     Context:
     {context}
+
+    Instructions:
+    - Answer only from the provided context.
+    - Include citations for every factual statement.
+    - If multiple sources support the answer, include all relevant citations.
+    - Do not add any information that is not present in the context.

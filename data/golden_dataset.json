@@ -5,6 +5,7 @@
     "ground_truth": "A research paper aims to present findings, analyze a problem, and contribute new knowledge to a field.",
     "source": "general",
     "difficulty": "easy"
+
   },
   {
     "id": 2,
@@ -12,6 +13,7 @@
     "ground_truth": "The introduction section explains the problem statement.",
     "source": "introduction",
     "difficulty": "easy"
+
   },
   {
     "id": 3,
@@ -19,6 +21,7 @@
     "ground_truth": "The literature review summarizes previous research related to the topic.",
     "source": "literature_review",
     "difficulty": "medium"
+
   },
   {
     "id": 4,
@@ -26,6 +29,7 @@
     "ground_truth": "The methodology explains how the research was conducted, including data collection and analysis methods.",
     "source": "methodology",
     "difficulty": "medium"
+
   },
   {
     "id": 5,
@@ -33,6 +37,7 @@
     "ground_truth": "The results section presents the findings of the research without interpretation.",
     "source": "results",
     "difficulty": "easy"
+
   },
   {
     "id": 6,
@@ -40,6 +45,7 @@
     "ground_truth": "The discussion interprets the results and explains their significance.",
     "source": "discussion",
     "difficulty": "medium"
+
   },
   {
     "id": 7,
@@ -47,6 +53,7 @@
     "ground_truth": "The conclusion summarizes the findings and suggests future research directions.",
     "source": "conclusion",
     "difficulty": "easy"
+
   },
   {
     "id": 8,
@@ -54,6 +61,7 @@
     "ground_truth": "An abstract is a brief summary of the research paper including objectives, methods, and results.",
     "source": "abstract",
     "difficulty": "easy"
+
   },
   {
     "id": 9,
@@ -61,6 +69,7 @@
     "ground_truth": "Citation gives credit to original authors and avoids plagiarism.",
     "source": "general",
     "difficulty": "easy"
+
   },
   {
     "id": 10,
@@ -68,6 +77,7 @@
     "ground_truth": "A hypothesis is a testable prediction about the relationship between variables.",
     "source": "methodology",
     "difficulty": "medium"
+
   },
   {
     "id": 11,
@@ -75,6 +85,7 @@
     "ground_truth": "Qualitative research uses non-numerical data such as text, interviews, and observations.",
     "source": "methodology",
     "difficulty": "medium"
+
   },
   {
     "id": 12,
@@ -82,6 +93,7 @@
     "ground_truth": "Quantitative research uses numerical data and statistical analysis.",
     "source": "methodology",
     "difficulty": "medium"
+
   },
   {
     "id": 13,
@@ -89,6 +101,7 @@
     "ground_truth": "Peer review is the evaluation of a research paper by experts in the same field.",
     "source": "general",
     "difficulty": "easy"
+
   },
   {
     "id": 14,
@@ -96,6 +109,7 @@
     "ground_truth": "A research gap is an area that has not been fully explored in existing studies.",
     "source": "introduction",
     "difficulty": "medium"
+
   },
   {
     "id": 15,
@@ -103,6 +117,7 @@
     "ground_truth": "Keywords are important terms that describe the main topics of the research.",
     "source": "general",
     "difficulty": "easy"
+
   },
 
   {
@@ -111,6 +126,7 @@
     "ground_truth": "Research methodology is the systematic approach used to conduct the study and analyze data.",
     "source": "methodology",
     "difficulty": "easy"
+
   },
   {
     "id": 17,
@@ -118,6 +134,7 @@
     "ground_truth": "Data analysis helps interpret collected data and draw meaningful conclusions.",
     "source": "results",
     "difficulty": "medium"
+
   },
   {
     "id": 18,
@@ -125,6 +142,7 @@
     "ground_truth": "A variable is any measurable factor that can change or be controlled in a study.",
     "source": "methodology",
     "difficulty": "easy"
+
   },
   {
     "id": 19,
@@ -132,6 +150,7 @@
     "ground_truth": "Independent variables are manipulated, while dependent variables are measured outcomes.",
     "source": "methodology",
     "difficulty": "medium"
+
   },
   {
     "id": 20,
@@ -139,6 +158,7 @@
     "ground_truth": "A sample is a subset of the population selected for analysis.",
     "source": "methodology",
     "difficulty": "easy"
+
   },
   {
     "id": 21,
@@ -146,6 +166,7 @@
     "ground_truth": "Population refers to the entire group of individuals or data points under study.",
     "source": "methodology",
     "difficulty": "easy"
+
   },
   {
     "id": 22,
@@ -153,6 +174,7 @@
     "ground_truth": "Sampling is the process of selecting a subset of individuals from a population.",
     "source": "methodology",
     "difficulty": "easy"
+
   },
   {
     "id": 23,
@@ -160,6 +182,7 @@
     "ground_truth": "Bias is a systematic error that affects the validity of research results.",
     "source": "discussion",
     "difficulty": "medium"
+
   },
   {
     "id": 24,
@@ -174,6 +197,7 @@
     "ground_truth": "Reliability refers to the consistency of research results over repeated trials.",
     "source": "methodology",
     "difficulty": "medium"
+
   },
   {
     "id": 26,
@@ -181,20 +205,25 @@
     "ground_truth": "Data preprocessing involves cleaning and transforming raw data before analysis.",
     "source": "methodology",
     "difficulty": "medium"
+
   },
   {
     "id": 27,
     "question": "What is normalization in data processing?",
+
     "ground_truth": "Normalization is the process of scaling data to a standard range.",
     "source": "methodology",
     "difficulty": "medium"
+
   },
   {
     "id": 28,
     "question": "What is data visualization?",
+
     "ground_truth": "Data visualization is the graphical representation of data to understand patterns and trends.",
     "source": "results",
     "difficulty": "easy"
+
   },
   {
     "id": 29,
@@ -202,6 +231,7 @@
     "ground_truth": "Statistical significance indicates whether the results are unlikely due to chance.",
     "source": "results",
     "difficulty": "medium"
+
   },
   {
     "id": 30,
@@ -209,6 +239,7 @@
     "ground_truth": "A control group is a group that does not receive the experimental treatment and is used for comparison.",
     "source": "methodology",
     "difficulty": "medium"
+
   },
 
   {
@@ -217,13 +248,16 @@
     "ground_truth": "The objective is to analyze and summarize existing research related to the topic.",
     "source": "literature_review",
     "difficulty": "medium"
+
   },
   {
     "id": 32,
     "question": "What is an experimental research design?",
+
     "ground_truth": "It is a research design where variables are manipulated to observe effects.",
     "source": "methodology",
     "difficulty": "medium"
+
   },
   {
     "id": 33,
@@ -231,6 +265,7 @@
     "ground_truth": "It is a research method where the researcher observes subjects without interference.",
     "source": "methodology",
     "difficulty": "medium"
+
   },
   {
     "id": 34,
@@ -238,6 +273,7 @@
     "ground_truth": "A survey is a method of collecting data through questionnaires or interviews.",
     "source": "methodology",
     "difficulty": "easy"
+
   },
   {
     "id": 35,
@@ -245,6 +281,7 @@
     "ground_truth": "Research design is the overall plan for conducting a study.",
     "source": "methodology",
     "difficulty": "easy"
+
   },
   {
     "id": 36,
@@ -252,6 +289,7 @@
     "ground_truth": "Primary data is original data collected directly from sources.",
     "source": "methodology",
     "difficulty": "easy"
+
   },
   {
     "id": 37,
@@ -259,6 +297,7 @@
     "ground_truth": "Secondary data is data collected from existing sources like books or journals.",
     "source": "methodology",
     "difficulty": "easy"
+
   },
   {
     "id": 38,
@@ -266,6 +305,7 @@
     "ground_truth": "Data interpretation is the process of making sense of analyzed data.",
     "source": "results",
     "difficulty": "medium"
+
   },
   {
     "id": 39,
@@ -273,6 +313,7 @@
     "ground_truth": "A research objective defines what the study aims to achieve.",
     "source": "introduction",
     "difficulty": "easy"
+
   },
   {
     "id": 40,
@@ -280,6 +321,7 @@
     "ground_truth": "A research question defines the specific problem the study investigates.",
     "source": "introduction",
     "difficulty": "easy"
+
   },
   {
     "id": 41,
@@ -287,6 +329,7 @@
     "ground_truth": "An algorithm is a step-by-step procedure used to solve a problem.",
     "source": "methodology",
     "difficulty": "medium"
+
   },
   {
     "id": 42,
@@ -294,6 +337,7 @@
     "ground_truth": "Model training is the process of teaching a model using data.",
     "source": "methodology",
     "difficulty": "medium"
+
   },
   {
     "id": 43,
@@ -301,13 +345,16 @@
     "ground_truth": "Model testing evaluates how well a trained model performs on unseen data.",
     "source": "results",
     "difficulty": "medium"
+
   },
   {
     "id": 44,
     "question": "What is overfitting in research models?",
+
     "ground_truth": "Overfitting occurs when a model performs well on training data but poorly on new data.",
     "source": "methodology",
     "difficulty": "medium"
+
   },
   {
     "id": 45,
@@ -315,13 +362,16 @@
     "ground_truth": "Underfitting occurs when a model fails to capture patterns in the data.",
     "source": "methodology",
     "difficulty": "medium"
+
   },
   {
     "id": 46,
     "question": "What is feature selection?",
+
     "ground_truth": "Feature selection is the process of choosing important variables for a model.",
     "source": "methodology",
     "difficulty": "medium"
+
   },
   {
     "id": 47,
@@ -329,24 +379,30 @@
     "ground_truth": "Feature engineering is creating or modifying input variables to improve model performance.",
     "source": "methodology",
     "difficulty": "medium"
+
   },
   {
     "id": 48,
     "question": "What is an outlier in data?",
+
     "ground_truth": "An outlier is a data point that significantly differs from other observations.",
     "source": "methodology",
     "difficulty": "easy"
+
   },
   {
     "id": 49,
     "question": "What is correlation in research?",
+
     "ground_truth": "Correlation measures the relationship between two variables.",
     "source": "results",
     "difficulty": "medium"
+
   },
   {
     "id": 50,
     "question": "What is regression analysis?",
+
     "ground_truth": "Regression analysis is a statistical method used to model relationships between variables.",
     "source": "results",
     "difficulty": "medium"

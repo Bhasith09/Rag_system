@@ -1,0 +1,14 @@
+streamlit
+rank-bm25
+langchain-text-splitters
+PyPDF2
+groq
+python-dotenv
+pyyaml
+sentence-transformers
+chromadb
+pandas
+numpy
+datasets
+ragas
+langchain-groq

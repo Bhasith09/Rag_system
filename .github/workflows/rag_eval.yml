@@ -15,13 +15,14 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
-          python-version: "3.10.13"
+          python-version: "3.10.0"
 
       - name: Cache pip
         uses: actions/cache@v3
         with:
           path: ~/.cache/pip
           key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+
           restore-keys: |
             ${{ runner.os }}-pip-
 
@@ -45,3 +46,4 @@ jobs:
         if: failure()
         run: |
           echo "❌ Evaluation failed"
+

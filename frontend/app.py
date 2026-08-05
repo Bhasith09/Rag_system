@@ -1,6 +1,6 @@
 import streamlit as st
 import requests
-API_URL = "http://backend:8000"
+API_URL = "API_URL"  # Use the environment variable for the API URL
 #API_URL = "http://127.0.0.1:8000"
 
 st.set_page_config(page_title="Production Hybrid RAG", layout="wide")

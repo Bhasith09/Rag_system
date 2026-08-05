@@ -14,3 +14,5 @@ pyyaml
 pypdf
 python-dotenv
 streamlit
+fastapi
+requests

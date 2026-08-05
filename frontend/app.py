@@ -1,11 +1,8 @@
 import streamlit as st
 import requests
-import os
-from dotenv import load_dotenv
 
-load_dotenv()
 
-API_URL = os.getenv("API_URL")  # Use the environment variable for the API URL
+API_URL = "https://resume-frontend-s1xd.onrender.com"  # Use the environment variable for the API URL
 #API_URL = "http://127.0.0.1:8000"
 
 st.set_page_config(page_title="Production Hybrid RAG", layout="wide")
